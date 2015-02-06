@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("MiniBiggy")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Ultra-simple json document store with linq based on Biggy")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Andre Carlucci")]
 [assembly: AssemblyProduct("MiniBiggy")]

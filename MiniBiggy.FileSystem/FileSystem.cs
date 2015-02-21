@@ -3,18 +3,24 @@ using System.Threading.Tasks;
 
 namespace MiniBiggy.FileSystem {
     public class FileSystem : IDataStore {
+
+        protected virtual string GetListFullPath(string listName) {
+            return listName + ".js";
+        }
+
         public async Task<string> ReadAllTextAsync(string listName) {
             return await Task.Run(() => {
-                if (!File.Exists(listName)) {
+                var listPath = GetListFullPath(listName);
+                if (!File.Exists(listPath)) {
                     return "";
                 }
-                return File.ReadAllText(listName);
+                return File.ReadAllText(listPath);
             });
         }
 
         public Task WriteAllTextAsync(string listName, string json) {
             return Task.Run(() => {
-                File.WriteAllText(listName, json);
+                File.WriteAllText(GetListFullPath(listName), json);
             });
         }
     }

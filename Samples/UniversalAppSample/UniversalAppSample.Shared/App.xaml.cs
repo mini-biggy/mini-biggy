@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -15,6 +16,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using FileSystemSample;
+using MiniBiggy;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
@@ -37,6 +40,11 @@ namespace UniversalAppSample
         {
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
+
+            var t = new Tweet();
+            var list = PersistentList.Create<Tweet>();
+            list.Add(t);
+            Debug.WriteLine("Size: " + list.Count);
         }
 
         /// <summary>

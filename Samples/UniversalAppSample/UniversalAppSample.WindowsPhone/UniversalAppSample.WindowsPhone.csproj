@@ -105,18 +105,14 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MiniBiggy">
-      <HintPath>..\..\..\packages\mini-biggy.1.1.0.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\MiniBiggy.dll</HintPath>
-    </Reference>
-    <Reference Include="MiniBiggy.UniversalApps">
-      <HintPath>..\..\..\packages\mini-biggy.1.1.0.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\MiniBiggy.UniversalApps.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.8\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\..\..\MiniBiggy.UniversalApps\MiniBiggy.UniversalApps.csproj">
+      <Project>{3406f1db-8ec2-43bb-a657-3a58d0392baf}</Project>
+      <Name>MiniBiggy.UniversalApps</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\MiniBiggy\MiniBiggy.csproj">
+      <Project>{79a36b90-9f60-4363-8640-195f40653238}</Project>
+      <Name>MiniBiggy</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

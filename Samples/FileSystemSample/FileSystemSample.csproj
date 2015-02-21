@@ -32,16 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MiniBiggy">
-      <HintPath>..\..\packages\mini-biggy.1.1.0.0\lib\net45\MiniBiggy.dll</HintPath>
-    </Reference>
-    <Reference Include="MiniBiggy.FileSystem">
-      <HintPath>..\..\packages\mini-biggy.1.1.0.0\lib\net45\MiniBiggy.FileSystem.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -57,7 +47,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MiniBiggy.FileSystem\MiniBiggy.FileSystem.csproj">
+      <Project>{b0af5750-d0d9-4b4f-9f61-8766f1f460ca}</Project>
+      <Name>MiniBiggy.FileSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MiniBiggy\MiniBiggy.csproj">
+      <Project>{79a36b90-9f60-4363-8640-195f40653238}</Project>
+      <Name>MiniBiggy</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

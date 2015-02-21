@@ -35,8 +35,11 @@ namespace MiniBiggy {
         }
 
         private void Load() {
-            var json = _dataStore.ReadAllTextAsync(Name);
-            _items.AddRange(JsonConvert.DeserializeObject<List<T>>(json.Result));
+            var json = _dataStore.ReadAllTextAsync(Name).Result;
+            if (String.IsNullOrEmpty(json)) {
+                return;
+            }
+            _items.AddRange(JsonConvert.DeserializeObject<List<T>>(json));
         }
 
         private void Save() {

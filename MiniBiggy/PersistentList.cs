@@ -7,9 +7,8 @@ namespace MiniBiggy {
 
     public class PersistentList<T> : ICollection<T> where T : new() {
 
-        private List<T> _items;
-        private string _filename;
-        private IFilesystem _filesystem;
+        private readonly List<T> _items;
+        private readonly IDataStore _dataStore;
 
         public event EventHandler<PersistedEventArgs<T>> ItemsRemoved;
         public event EventHandler<PersistedEventArgs<T>> ItemsAdded;
@@ -18,33 +17,31 @@ namespace MiniBiggy {
         public event EventHandler Loaded;
         public event EventHandler Saved;
 
-        public PersistentList(IFilesystem filesystem = null) {
-            if (filesystem == null) {
-                filesystem = new FileSystem();
-            }
-            _filesystem = filesystem;
-            _filename = typeof(T) + ".js";
+        public PersistentList(IDataStore dataStore) {
+            _dataStore = dataStore;
             _items = new List<T>();
             Load();
         }
 
-        public PersistentList(IEnumerable<T> items)
-            : this() {
+        public PersistentList(IDataStore dataStore, IEnumerable<T> items)
+            : this(dataStore) {
             Add(items);
         }
 
-        private void Load() {
-            if (!_filesystem.Exists(_filename)) {
-                return;
+        public virtual string Name {
+            get {
+                return typeof(T).Name;
             }
-            var json = _filesystem.ReadAllText(_filename);
-            _items.AddRange(JsonConvert.DeserializeObject<List<T>>(json));
         }
 
+        private void Load() {
+            var json = _dataStore.ReadAllTextAsync(Name);
+            _items.AddRange(JsonConvert.DeserializeObject<List<T>>(json.Result));
+        }
 
         private void Save() {
             var json = JsonConvert.SerializeObject(_items);
-            _filesystem.WriteAllText(_filename, json);
+            _dataStore.WriteAllTextAsync(Name, json);
         }
 
         public virtual int Update(T item) {

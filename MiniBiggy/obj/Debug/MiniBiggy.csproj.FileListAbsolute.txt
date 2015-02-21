@@ -1,7 +1,0 @@
-C:\dev\pessoal\MiniBiggy\MiniBiggy\obj\Debug\MiniBiggy.csprojResolveAssemblyReference.cache
-C:\dev\pessoal\MiniBiggy\MiniBiggy\bin\Debug\MiniBiggy.dll
-C:\dev\pessoal\MiniBiggy\MiniBiggy\bin\Debug\MiniBiggy.pdb
-C:\dev\pessoal\MiniBiggy\MiniBiggy\bin\Debug\Newtonsoft.Json.dll
-C:\dev\pessoal\MiniBiggy\MiniBiggy\bin\Debug\Newtonsoft.Json.xml
-C:\dev\pessoal\MiniBiggy\MiniBiggy\obj\Debug\MiniBiggy.dll
-C:\dev\pessoal\MiniBiggy\MiniBiggy\obj\Debug\MiniBiggy.pdb

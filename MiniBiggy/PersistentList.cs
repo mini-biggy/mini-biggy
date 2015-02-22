@@ -44,7 +44,7 @@ namespace MiniBiggy {
 
         private void Save() {
             var json = JsonConvert.SerializeObject(_items);
-            _dataStore.WriteAllTextAsync(Name, json);
+            _dataStore.WriteAllTextAsync(Name, json).Wait();
         }
 
         public virtual int Update(T item) {

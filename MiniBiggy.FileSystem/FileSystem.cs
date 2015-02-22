@@ -18,8 +18,8 @@ namespace MiniBiggy.FileSystem {
             });
         }
 
-        public Task WriteAllTextAsync(string listName, string json) {
-            return Task.Run(() => {
+        public async Task WriteAllTextAsync(string listName, string json) {
+            await Task.Run(() => {
                 File.WriteAllText(GetListFullPath(listName), json);
             });
         }

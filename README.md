@@ -6,7 +6,7 @@
 The original project became too big, many refactorings were happening all the time and I could never find the nuget packages to work with. So I created Mini-Biggy.
 
 ## Nuget
-Install-Package mini-biggy
+**Install-Package mini-biggy**
 
 ##Quick Start
 

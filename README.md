@@ -14,14 +14,14 @@ The original project became too big, many refactorings were happening all the ti
 Let's create a class called Tweet and save a tweet object.
 This code will create a file called tweet.js with our tweet serialized. Call Save() or SaveAsync() to persist the list.
 ```
-	var t = new Tweet();
+    var t = new Tweet();
     var list = PersistentList.Create<Tweet>();
     list.Add(t);
     await list.SaveAsync();
 ```
 
 ###Loading them later
-Every time you create a list of type Tweet, it will load all saved tweets:
+Every time you create a list of some type, it will load all saved objects of that type:
 ```
 	var list = PersistentList.Create<Tweet>();
     var count = list.Count(); //equals 1
@@ -29,7 +29,7 @@ Every time you create a list of type Tweet, it will load all saved tweets:
 
 ###Turning on AutoSave
 ```
-	var t = new Tweet();
+    var t = new Tweet();
     var list = PersistentList.Create<Tweet>();
     list.AutoSave = true;
     list.Add(t);

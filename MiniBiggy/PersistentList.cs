@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace MiniBiggy {
@@ -17,6 +18,8 @@ namespace MiniBiggy {
         public event EventHandler Loaded;
         public event EventHandler Saved;
 
+        public bool AutoSave { get; set; }
+
         public PersistentList(IDataStore dataStore) {
             _dataStore = dataStore;
             _items = new List<T>();
@@ -28,12 +31,6 @@ namespace MiniBiggy {
             Add(items);
         }
 
-        public virtual string Name {
-            get {
-                return typeof(T).Name;
-            }
-        }
-
         private void Load() {
             var json = _dataStore.ReadAllTextAsync(Name).Result;
             if (String.IsNullOrEmpty(json)) {
@@ -41,25 +38,37 @@ namespace MiniBiggy {
             }
             _items.AddRange(JsonConvert.DeserializeObject<List<T>>(json));
         }
-
-        private void Save() {
-            var json = JsonConvert.SerializeObject(_items);
-            _dataStore.WriteAllTextAsync(Name, json).Wait();
+        
+        public virtual string Name {
+            get {
+                return typeof(T).Name;
+            }
         }
 
-        public virtual int Update(T item) {
+        public void Save() {
+            SaveAsync().Wait();
+        }
+
+        public async Task SaveAsync() {
+            var json = JsonConvert.SerializeObject(_items);
+            await _dataStore.WriteAllTextAsync(Name, json);
+        }
+
+        public async virtual Task<int> UpdateAsync(T item) {
             var index = _items.IndexOf(item);
             if (index > -1) {
                 _items.RemoveAt(index);
                 _items.Insert(index, item);
             }
-            Save();
+            if (AutoSave) {
+                await SaveAsync();
+            }
             OnItemsUpdated(new List<T> { item });
             OnItemsChanged(new List<T> { item });
             return 1;
         }
 
-        public virtual int Update(IEnumerable<T> items) {
+        public async virtual Task<int> UpdateAsync(IEnumerable<T> items) {
             var itemsToUpdate = items.ToList();
             foreach (var item in itemsToUpdate) {
                 var index = _items.IndexOf(item);
@@ -68,7 +77,9 @@ namespace MiniBiggy {
                     _items.Insert(index, item);
                 }
             }
-            Save();
+            if (AutoSave) {
+                await SaveAsync();
+            }
             OnItemsUpdated(itemsToUpdate);
             OnItemsChanged(itemsToUpdate);
             return itemsToUpdate.Count();
@@ -76,7 +87,9 @@ namespace MiniBiggy {
 
         public virtual void Add(T item) {
             _items.Add(item);
-            Save();
+            if (AutoSave) {
+                SaveAsync().Wait();
+            }
             OnItemsAdded(new List<T> { item });
             OnItemsChanged(new List<T> { item });
         }
@@ -84,14 +97,18 @@ namespace MiniBiggy {
         public void Add(IEnumerable<T> items) {
             var list = items.ToList();
             _items.AddRange(list);
-            Save();
+            if (AutoSave) {
+                SaveAsync().Wait();
+            }
             OnItemsAdded(list);
             OnItemsChanged(list);
         }
 
         public virtual void Clear() {
             _items.Clear();
-            Save();
+            if (AutoSave) {
+                SaveAsync().Wait();
+            }
             OnItemsChanged(new List<T>());
         }
 
@@ -113,7 +130,9 @@ namespace MiniBiggy {
 
         public virtual bool Remove(T item) {
             var removed = _items.Remove(item);
-            Save();
+            if (AutoSave) {
+                SaveAsync().Wait();
+            }
             OnItemsRemoved(new List<T> { item });
             OnItemsChanged(new List<T> { item });
             return removed;
@@ -127,7 +146,9 @@ namespace MiniBiggy {
                     removedItems.Add(item);
                 }
             }
-            Save();
+            if (AutoSave) {
+                SaveAsync().Wait();
+            }
             OnItemsRemoved(removedItems);
             OnItemsChanged(removedItems);
             return removedItems.Count();

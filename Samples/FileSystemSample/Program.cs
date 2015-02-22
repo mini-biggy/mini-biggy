@@ -7,7 +7,8 @@ namespace FileSystemSample {
     class Program {
         static void Main(string[] args) {
             var t = new Tweet();
-            ICollection<Tweet> list = PersistentList.Create<Tweet>();
+            var list = PersistentList.Create<Tweet>();
+            list.AutoSave = true;
             for (int i = 0; i < 1000; i++) {
                 list.Add(t);                
             }

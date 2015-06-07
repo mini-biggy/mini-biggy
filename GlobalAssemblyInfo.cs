@@ -8,4 +8,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 
 [assembly: ComVisible(false)]
-[assembly: AssemblyVersion("1.1")]
+[assembly: AssemblyVersion("1.2")]

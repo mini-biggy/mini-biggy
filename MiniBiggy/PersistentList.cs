@@ -19,6 +19,7 @@ namespace MiniBiggy {
         public event EventHandler Saved;
 
         public bool AutoSave { get; set; }
+        public bool IsNew { get; set; }
 
         public PersistentList(IDataStore dataStore) {
             _dataStore = dataStore;
@@ -34,6 +35,7 @@ namespace MiniBiggy {
         private void Load() {
             var json = _dataStore.ReadAllTextAsync(Name).Result;
             if (String.IsNullOrEmpty(json)) {
+                IsNew = true;
                 return;
             }
             _items.AddRange(JsonConvert.DeserializeObject<List<T>>(json));

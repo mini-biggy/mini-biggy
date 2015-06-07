@@ -4,6 +4,12 @@ using System.Threading.Tasks;
 namespace MiniBiggy.FileSystem {
     public class FileSystem : IDataStore {
 
+        public string BasePath
+
+        public FileSystem(string path) {
+            
+        }
+
         protected virtual string GetListFullPath(string listName) {
             return listName + ".js";
         }

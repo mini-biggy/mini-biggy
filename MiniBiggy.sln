@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBiggy", "MiniBiggy\MiniBiggy.csproj", "{79A36B90-9F60-4363-8640-195F40653238}"
 EndProject
@@ -29,6 +29,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3B219AE4-B787-4A12-857D-AC38B86FBA8E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBiggy.Tests", "Tests\MiniBiggy.Tests\MiniBiggy.Tests.csproj", "{63855604-13EB-4366-BA71-5AC8D67384D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBiggy.FileSystem.Tests", "MiniBiggy.FileSystem.Tests\MiniBiggy.FileSystem.Tests.csproj", "{35B8FF90-78A6-44E7-90B2-2A96A5EF2A5C}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -141,6 +143,22 @@ Global
 		{63855604-13EB-4366-BA71-5AC8D67384D3}.Release|ARM.ActiveCfg = Release|Any CPU
 		{63855604-13EB-4366-BA71-5AC8D67384D3}.Release|x64.ActiveCfg = Release|Any CPU
 		{63855604-13EB-4366-BA71-5AC8D67384D3}.Release|x86.ActiveCfg = Release|Any CPU
+		{35B8FF90-78A6-44E7-90B2-2A96A5EF2A5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35B8FF90-78A6-44E7-90B2-2A96A5EF2A5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35B8FF90-78A6-44E7-90B2-2A96A5EF2A5C}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{35B8FF90-78A6-44E7-90B2-2A96A5EF2A5C}.Debug|ARM.Build.0 = Debug|Any CPU
+		{35B8FF90-78A6-44E7-90B2-2A96A5EF2A5C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{35B8FF90-78A6-44E7-90B2-2A96A5EF2A5C}.Debug|x64.Build.0 = Debug|Any CPU
+		{35B8FF90-78A6-44E7-90B2-2A96A5EF2A5C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{35B8FF90-78A6-44E7-90B2-2A96A5EF2A5C}.Debug|x86.Build.0 = Debug|Any CPU
+		{35B8FF90-78A6-44E7-90B2-2A96A5EF2A5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35B8FF90-78A6-44E7-90B2-2A96A5EF2A5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35B8FF90-78A6-44E7-90B2-2A96A5EF2A5C}.Release|ARM.ActiveCfg = Release|Any CPU
+		{35B8FF90-78A6-44E7-90B2-2A96A5EF2A5C}.Release|ARM.Build.0 = Release|Any CPU
+		{35B8FF90-78A6-44E7-90B2-2A96A5EF2A5C}.Release|x64.ActiveCfg = Release|Any CPU
+		{35B8FF90-78A6-44E7-90B2-2A96A5EF2A5C}.Release|x64.Build.0 = Release|Any CPU
+		{35B8FF90-78A6-44E7-90B2-2A96A5EF2A5C}.Release|x86.ActiveCfg = Release|Any CPU
+		{35B8FF90-78A6-44E7-90B2-2A96A5EF2A5C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -152,5 +170,6 @@ Global
 		{EDF4A7F4-E372-4F50-BB0F-B50FB9B0BBE2} = {A4A2A8A5-95AD-4312-83FE-965E3BE155C4}
 		{D9210E07-7CD5-47E3-B90E-2AE481A7EAF5} = {A4A2A8A5-95AD-4312-83FE-965E3BE155C4}
 		{63855604-13EB-4366-BA71-5AC8D67384D3} = {3B219AE4-B787-4A12-857D-AC38B86FBA8E}
+		{35B8FF90-78A6-44E7-90B2-2A96A5EF2A5C} = {3B219AE4-B787-4A12-857D-AC38B86FBA8E}
 	EndGlobalSection
 EndGlobal

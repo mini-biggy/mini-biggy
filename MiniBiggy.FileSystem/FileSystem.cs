@@ -3,15 +3,19 @@ using System.Threading.Tasks;
 
 namespace MiniBiggy.FileSystem {
     public class FileSystem : IDataStore {
+        private readonly string _basePath = "";
+        private const string FileExtension = ".jss";
 
-        public string BasePath
-
-        public FileSystem(string path) {
+        public FileSystem() {
             
         }
 
+        public FileSystem(string basePath) {
+            _basePath = basePath;
+        }
+
         protected virtual string GetListFullPath(string listName) {
-            return listName + ".js";
+            return Path.Combine(_basePath, listName + FileExtension);
         }
 
         public async Task<string> ReadAllTextAsync(string listName) {

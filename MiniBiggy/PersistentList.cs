@@ -167,33 +167,27 @@ namespace MiniBiggy {
         }
 
         protected virtual void OnItemsRemoved(List<T> items) {
-            var handler = ItemsRemoved;
-            if (handler != null) handler(this, new PersistedEventArgs<T>(items));
+            ItemsRemoved?.Invoke(this, new PersistedEventArgs<T>(items));
         }
 
         protected virtual void OnItemsUpdated(List<T> items) {
-            var handler = ItemsUpdated;
-            if (handler != null) handler(this, new PersistedEventArgs<T>(items));
+            ItemsUpdated?.Invoke(this, new PersistedEventArgs<T>(items));
         }
 
         protected virtual void OnItemsChanged(List<T> items) {
-            var handler = ItemsChanged;
-            if (handler != null) handler(this, new PersistedEventArgs<T>(items));
+            ItemsChanged?.Invoke(this, new PersistedEventArgs<T>(items));
         }
 
         protected virtual void OnItemsAdded(List<T> items) {
-            var handler = ItemsAdded;
-            if (handler != null) handler(this, new PersistedEventArgs<T>(items));
+            ItemsAdded?.Invoke(this, new PersistedEventArgs<T>(items));
         }
 
         protected virtual void OnLoaded() {
-            var handler = Loaded;
-            if (handler != null) handler(this, EventArgs.Empty);
+            Loaded?.Invoke(this, EventArgs.Empty);
         }
 
         protected virtual void OnSaved() {
-            var handler = Saved;
-            if (handler != null) handler(this, EventArgs.Empty);
+            Saved?.Invoke(this, EventArgs.Empty);
         }
     }
 }

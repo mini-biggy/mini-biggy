@@ -49,7 +49,9 @@
     <Compile Include="PersistentListTests.cs" />
     <Compile Include="MemDataStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaveStrategies\BackgroundSaveTests.cs" />
     <Compile Include="Tweet.cs" />
+    <Compile Include="Util\TimeMachineTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

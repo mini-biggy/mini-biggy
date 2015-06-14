@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MiniBiggy.SaveStrategies;
 using Newtonsoft.Json;
 
 namespace MiniBiggy {
@@ -10,6 +11,7 @@ namespace MiniBiggy {
 
         private readonly List<T> _items;
         private readonly IDataStore _dataStore;
+        public ISaveStrategy SaveStrategy { get; }
 
         public event EventHandler<PersistedEventArgs<T>> ItemsRemoved;
         public event EventHandler<PersistedEventArgs<T>> ItemsAdded;
@@ -18,18 +20,17 @@ namespace MiniBiggy {
         public event EventHandler Loaded;
         public event EventHandler Saved;
 
-        public bool AutoSave { get; set; }
         public bool IsNew { get; set; }
 
-        public PersistentList(IDataStore dataStore) {
+        public PersistentList(IDataStore dataStore, ISaveStrategy saveStrategy) {
             _dataStore = dataStore;
             _items = new List<T>();
+            if (saveStrategy == null) {
+                saveStrategy = new SaveOnlyWhenRequested();
+            }
+            SaveStrategy = saveStrategy;
+            SaveStrategy.NotifyUnsolicitedSave += (sender, args) => Save();
             Load();
-        }
-
-        public PersistentList(IDataStore dataStore, IEnumerable<T> items)
-            : this(dataStore) {
-            Add(items);
         }
 
         private void Load() {
@@ -49,6 +50,7 @@ namespace MiniBiggy {
 
         public void Save() {
             SaveAsync().Wait();
+            OnSaved();
         }
 
         public async Task SaveAsync() {
@@ -62,7 +64,7 @@ namespace MiniBiggy {
                 _items.RemoveAt(index);
                 _items.Insert(index, item);
             }
-            if (AutoSave) {
+            if (SaveStrategy.ShouldSaveNow()) {
                 await SaveAsync();
             }
             OnItemsUpdated(new List<T> { item });
@@ -79,7 +81,7 @@ namespace MiniBiggy {
                     _items.Insert(index, item);
                 }
             }
-            if (AutoSave) {
+            if (SaveStrategy.ShouldSaveNow()) {
                 await SaveAsync();
             }
             OnItemsUpdated(itemsToUpdate);
@@ -89,8 +91,8 @@ namespace MiniBiggy {
 
         public virtual void Add(T item) {
             _items.Add(item);
-            if (AutoSave) {
-                SaveAsync().Wait();
+            if (SaveStrategy.ShouldSaveNow()) {
+                Save();
             }
             OnItemsAdded(new List<T> { item });
             OnItemsChanged(new List<T> { item });
@@ -99,8 +101,8 @@ namespace MiniBiggy {
         public void Add(IEnumerable<T> items) {
             var list = items.ToList();
             _items.AddRange(list);
-            if (AutoSave) {
-                SaveAsync().Wait();
+            if (SaveStrategy.ShouldSaveNow()) {
+                Save();
             }
             OnItemsAdded(list);
             OnItemsChanged(list);
@@ -108,8 +110,8 @@ namespace MiniBiggy {
 
         public virtual void Clear() {
             _items.Clear();
-            if (AutoSave) {
-                SaveAsync().Wait();
+            if (SaveStrategy.ShouldSaveNow()) {
+                Save();
             }
             OnItemsChanged(new List<T>());
         }
@@ -132,8 +134,8 @@ namespace MiniBiggy {
 
         public virtual bool Remove(T item) {
             var removed = _items.Remove(item);
-            if (AutoSave) {
-                SaveAsync().Wait();
+            if (SaveStrategy.ShouldSaveNow()) {
+                Save();
             }
             OnItemsRemoved(new List<T> { item });
             OnItemsChanged(new List<T> { item });
@@ -148,8 +150,8 @@ namespace MiniBiggy {
                     removedItems.Add(item);
                 }
             }
-            if (AutoSave) {
-                SaveAsync().Wait();
+            if (SaveStrategy.ShouldSaveNow()) {
+                Save();
             }
             OnItemsRemoved(removedItems);
             OnItemsChanged(removedItems);

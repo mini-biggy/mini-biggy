@@ -11,6 +11,7 @@ namespace MiniBiggy {
 
         private readonly List<T> _items;
         private readonly IDataStore _dataStore;
+        private static readonly object SyncRoot = new object();
         public ISaveStrategy SaveStrategy { get; }
 
         public event EventHandler<PersistedEventArgs<T>> ItemsRemoved;
@@ -42,11 +43,7 @@ namespace MiniBiggy {
             _items.AddRange(JsonConvert.DeserializeObject<List<T>>(json));
         }
         
-        public virtual string Name {
-            get {
-                return typeof(T).Name;
-            }
-        }
+        public virtual string Name => typeof(T).Name;
 
         public void Save() {
             SaveAsync().Wait();
@@ -54,15 +51,19 @@ namespace MiniBiggy {
         }
 
         public async Task SaveAsync() {
-            var json = JsonConvert.SerializeObject(_items);
+            string json;
+            lock (SyncRoot) {
+                json = JsonConvert.SerializeObject(_items);
+            }
             await _dataStore.WriteAllTextAsync(Name, json);
         }
 
         public async virtual Task<int> UpdateAsync(T item) {
-            var index = _items.IndexOf(item);
-            if (index > -1) {
-                _items.RemoveAt(index);
-                _items.Insert(index, item);
+            lock (SyncRoot) {
+                var index = _items.IndexOf(item);
+                if (index > -1) {
+                    _items[index] = item;
+                }
             }
             if (SaveStrategy.ShouldSaveNow()) {
                 await SaveAsync();
@@ -74,11 +75,12 @@ namespace MiniBiggy {
 
         public async virtual Task<int> UpdateAsync(IEnumerable<T> items) {
             var itemsToUpdate = items.ToList();
-            foreach (var item in itemsToUpdate) {
-                var index = _items.IndexOf(item);
-                if (index > -1) {
-                    _items.RemoveAt(index);
-                    _items.Insert(index, item);
+            lock (SyncRoot) {
+                foreach (var item in itemsToUpdate) {
+                    var index = _items.IndexOf(item);
+                    if (index > -1) {
+                        _items[index] = item;
+                    }
                 }
             }
             if (SaveStrategy.ShouldSaveNow()) {
@@ -90,7 +92,9 @@ namespace MiniBiggy {
         }
 
         public virtual void Add(T item) {
-            _items.Add(item);
+            lock (SyncRoot) {
+                _items.Add(item);
+            }
             if (SaveStrategy.ShouldSaveNow()) {
                 Save();
             }
@@ -100,7 +104,9 @@ namespace MiniBiggy {
 
         public void Add(IEnumerable<T> items) {
             var list = items.ToList();
-            _items.AddRange(list);
+            lock (SyncRoot) {
+                _items.AddRange(list);
+            }
             if (SaveStrategy.ShouldSaveNow()) {
                 Save();
             }
@@ -109,7 +115,9 @@ namespace MiniBiggy {
         }
 
         public virtual void Clear() {
-            _items.Clear();
+            lock (SyncRoot) {
+                _items.Clear();
+            }
             if (SaveStrategy.ShouldSaveNow()) {
                 Save();
             }
@@ -117,23 +125,26 @@ namespace MiniBiggy {
         }
 
         public virtual bool Contains(T item) {
-            return _items.Contains(item);
+            lock (SyncRoot) {
+                return _items.Contains(item);
+            }
         }
 
         public virtual void CopyTo(T[] array, int arrayIndex) {
-            _items.CopyTo(array, arrayIndex);
+            lock (SyncRoot) {
+                _items.CopyTo(array, arrayIndex);
+            }
         }
 
-        public virtual int Count {
-            get { return _items.Count; }
-        }
+        public virtual int Count => _items.Count;
 
-        public virtual bool IsReadOnly {
-            get { return false; }
-        }
+        public virtual bool IsReadOnly => false;
 
         public virtual bool Remove(T item) {
-            var removed = _items.Remove(item);
+            bool removed;
+            lock (SyncRoot) {
+                removed = _items.Remove(item);
+            }
             if (SaveStrategy.ShouldSaveNow()) {
                 Save();
             }
@@ -145,9 +156,11 @@ namespace MiniBiggy {
         public virtual int Remove(IEnumerable<T> items) {
             var itemsToRemove = items.ToList();
             var removedItems = new List<T>();
-            foreach (var item in itemsToRemove) {
-                if (_items.Remove(item)) {
-                    removedItems.Add(item);
+            lock (SyncRoot) {
+                foreach (var item in itemsToRemove) {
+                    if (_items.Remove(item)) {
+                        removedItems.Add(item);
+                    }
                 }
             }
             if (SaveStrategy.ShouldSaveNow()) {
@@ -159,11 +172,15 @@ namespace MiniBiggy {
         }
 
         public IEnumerator<T> GetEnumerator() {
-            return _items.GetEnumerator();
+            lock (SyncRoot) {
+                return _items.GetEnumerator();
+            }
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
-            return _items.GetEnumerator();
+            lock (SyncRoot) {
+                return _items.GetEnumerator();
+            }
         }
 
         protected virtual void OnItemsRemoved(List<T> items) {

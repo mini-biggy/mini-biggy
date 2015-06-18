@@ -1,10 +1,12 @@
 ﻿using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MiniBiggy.FileSystem {
     public class FileSystem : IDataStore {
         private readonly string _basePath = "";
         private const string FileExtension = ".jss";
+        private static readonly object SyncRoot = new object();
 
         public FileSystem() {
             
@@ -19,18 +21,21 @@ namespace MiniBiggy.FileSystem {
         }
 
         public async Task<string> ReadAllTextAsync(string listName) {
-            return await Task.Run(() => {
-                var listPath = GetListFullPath(listName);
-                if (!File.Exists(listPath)) {
-                    return "";
-                }
-                return File.ReadAllText(listPath);
-            });
+            var listPath = GetListFullPath(listName);
+            if (!File.Exists(listPath)) {
+                return "";
+            }
+            return await Task.Run(() => File.ReadAllText(listPath));
         }
 
         public async Task WriteAllTextAsync(string listName, string json) {
-            await Task.Run(() => {
-                File.WriteAllText(GetListFullPath(listName), json);
+            var bytes = Encoding.UTF8.GetBytes(json);
+            var path = GetListFullPath(listName);
+            await Try.ThreeTimes(async () => {
+                File.Delete(path);
+                using (var fs = new FileStream(GetListFullPath(listName), FileMode.OpenOrCreate, FileAccess.Write)) {
+                    await fs.WriteAsync(bytes, 0, bytes.Length);
+                }
             });
         }
     }

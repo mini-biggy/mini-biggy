@@ -47,6 +47,7 @@
     <Compile Include="SaveStrategies\SaveOnEveryChange.cs" />
     <Compile Include="SaveStrategies\SaveOnlyWhenRequested.cs" />
     <Compile Include="Util\TimeMachine.cs" />
+    <Compile Include="Util\Try.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">

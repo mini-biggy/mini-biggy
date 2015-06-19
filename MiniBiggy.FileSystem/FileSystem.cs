@@ -6,10 +6,9 @@ namespace MiniBiggy.FileSystem {
     public class FileSystem : IDataStore {
         private readonly string _basePath = "";
         private const string FileExtension = ".jss";
-        private static readonly object SyncRoot = new object();
 
         public FileSystem() {
-            
+
         }
 
         public FileSystem(string basePath) {

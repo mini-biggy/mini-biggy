@@ -30,11 +30,21 @@ Every time you create a list of some type, it will load all saved objects of tha
     var count = list.Count(); //equals 1
 ```
 
-###Saving Modes
+### Linq Goodness
+
+Remember, your list is entirely in memory, so any linq operator will work just fine:
+
+```
+ biggyList.Where(x => x.Username == "admin" && x.Message.ToLower().Contains("urgent"))
+                .OrderBy(x => x.DateTime)
+                .FirstOrDefault();
+```
+
+##Saving Modes
 
 You can follow 3 strategies to save your list using biggy:
 
-##Manual Save
+###Manual Save
 
 The list will be saved only when Save() or SaveAsync() is called. This is the default behavior.
 
@@ -45,7 +55,7 @@ The list will be saved only when Save() or SaveAsync() is called. This is the de
     list.Save();
 ```
 
-##Automatic Save
+###Automatic Save
 
 The list will be saved on every change: adding, deleting or updating an item saves the list. You still can call Save and SaveAsync if you want.
 
@@ -57,7 +67,7 @@ The list will be saved on every change: adding, deleting or updating an item sav
 
 Just note that it can take some time to save, specially on loops (use AddRange when on loops).
 
-##Background Save
+###Background Save
 
 This is really useful if your list changes a lot, specilly by multithread applications (web). The list will be saved every X seconds, but only if it was modified. You still can call Save and SaveAsync if you want.
 
@@ -67,7 +77,7 @@ This is really useful if your list changes a lot, specilly by multithread applic
     list.Add(t); //it will be saved on next loop, in a background thread
 ```
 
-###Is mini-biggy for you?
+##Is mini-biggy for you?
 Mini-biggy is an excellent choice for storing your persistence data if:
 
  - you want a freaking fast and simple way to store your objects.
@@ -75,7 +85,7 @@ Mini-biggy is an excellent choice for storing your persistence data if:
  - you want full Linq support 
  - your objects are json serialized and you will take care of them when changing your model
 
-###Which platforms does it support?
+##Which platforms does it support?
  - .net 4.5 using filesystem
  - Universal Apps (Windows Phone and Windows Store Apps) using the Storage.
 

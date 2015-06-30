@@ -8,10 +8,11 @@
     <owners>$author$</owners>
 	  <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>https://github.com/andrecarlucci/mini-biggy</projectUrl>
+	<iconUrl>https://raw.githubusercontent.com/mini-biggy/mini-biggy/master/Assets/mini_biggy_icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>Copyright Andre Carlucci 2015</copyright>
-    <tags>documentstore json linq nosql sql database filesystem</tags>
+    <tags>biggy documentstore json linq nosql sql database filesystem</tags>
   </metadata>
   <files>
       <file src="..\MiniBiggy\bin\Release\MiniBiggy.dll" target="lib\net45\MiniBiggy.dll"/>

@@ -26,19 +26,46 @@ This code will create a file called tweet.js with our tweet serialized. Call Sav
 ###Loading them later
 Every time you create a list of some type, it will load all saved objects of that type:
 ```
-	var list = PersistentList.Create<Tweet>();
+    var list = PersistentList.Create<Tweet>();
     var count = list.Count(); //equals 1
 ```
 
-###Turning on AutoSave
+###Saving Modes
+
+You can follow 3 strategies to save your list using biggy:
+
+##Manual Save
+
+The list will be saved only when Save() or SaveAsync() is called. This is the default behavior.
+
 ```
     var t = new Tweet();
     var list = PersistentList.Create<Tweet>();
-    list.AutoSave = true;
     list.Add(t);
-    //it's already persisted, no need to call Save()
+    list.Save();
 ```
+
+##Automatic Save
+
+The list will be saved on every change: adding, deleting or updating an item saves the list. You still can call Save and SaveAsync if you want.
+
+```
+    var t = new Tweet();
+    var list = PersistentList.Create<Tweet>(new SaveOnEveryChange());
+    list.Add(t); //list saved
+```
+
 Just note that it can take some time to save, specially on loops (use AddRange when on loops).
+
+##Background Save
+
+This is really useful if your list changes a lot, specilly by multithread applications (web). The list will be saved every X seconds, but only if it was modified. You still can call Save and SaveAsync if you want.
+
+```
+    var t = new Tweet();
+    var list = PersistentList.Create<Tweet>(new BackgroundSave(TimeSpan.FromSeconds(3)));
+    list.Add(t); //it will be saved on next loop, in a background thread
+```
 
 ###Is mini-biggy for you?
 Mini-biggy is an excellent choice for storing your persistence data if:

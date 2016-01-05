@@ -15,7 +15,7 @@ namespace MiniBiggy.Tests.Util {
         }
 
         [Test]
-        public async void Should_override_delay() {
+        public async Task Should_override_delay() {
             TimeMachine.OverrideDelayWith(orig => TimeSpan.Zero);
             var sw = new Stopwatch();
             sw.Start();
@@ -24,7 +24,7 @@ namespace MiniBiggy.Tests.Util {
         }
 
         [Test]
-        public async void Should_unblock_delay() {
+        public async Task Should_unblock_delay() {
             var task = Task.Run(async () => {
                 while (TimeMachine.UnblockAllDelays() == 0) {
                     await Task.Delay(10);
@@ -34,7 +34,7 @@ namespace MiniBiggy.Tests.Util {
         }
 
         [Test]
-        public async void Should_unblock_one_or_more_delays() {
+        public async Task Should_unblock_one_or_more_delays() {
             var task = Task.Run(() => {
                 TimeMachine.UnblockOneOrMoreDelays();
             });

@@ -20,16 +20,17 @@ namespace MiniBiggy.Tests.SaveStrategies {
 
         [Test]
         public void Should_notify_save_when_dirty() {
-            var sem = new Semaphore(0,1);
             var saveCalled = false;
-            var strategy = new BackgroundSave(TimeSpan.FromSeconds(10));
-            strategy.NotifyUnsolicitedSave += (sender, args) => {
-                saveCalled = true;
-                sem.Release();
-            };
-            strategy.ShouldSaveNow();
-            TimeMachine.UnblockOneOrMoreDelays();
-            sem.WaitOne(10000);
+            using (var sem = new Semaphore(0, 1)) {
+                var strategy = new BackgroundSave(TimeSpan.FromSeconds(10));
+                strategy.NotifyUnsolicitedSave += (sender, args) => {
+                    saveCalled = true;
+                    sem.Release();
+                };
+                strategy.ShouldSaveNow();
+                TimeMachine.UnblockOneOrMoreDelays();
+                sem.WaitOne(10000);
+            }
             Assert.IsTrue(saveCalled);
         }
 

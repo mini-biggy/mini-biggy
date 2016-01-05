@@ -1,5 +1,6 @@
 ﻿using MiniBiggy.SaveStrategies;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace MiniBiggy.Tests {
     public class PersistentListTests {
@@ -17,7 +18,7 @@ namespace MiniBiggy.Tests {
         }
 
         [Test]
-        public async void Should_save_async() {
+        public async Task Should_save_async() {
             _list.Add(new Tweet());
             await _list.SaveAsync();
             Assert.AreEqual("[{\"Username\":null,\"Message\":null,\"DateTime\":\"0001-01-01T00:00:00\"}]", _store.Json);
@@ -29,5 +30,7 @@ namespace MiniBiggy.Tests {
             _list.Save();
             Assert.AreEqual("[{\"Username\":null,\"Message\":null,\"DateTime\":\"0001-01-01T00:00:00\"}]", _store.Json);
         }
+
+
     }
 }

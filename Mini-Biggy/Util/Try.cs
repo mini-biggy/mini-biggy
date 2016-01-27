@@ -7,15 +7,18 @@ namespace MiniBiggy.Util {
             await Again(func, 3);
         }
 
-        private static async Task Again(Func<Task> func, int times) {
+        private static async Task Again(Func<Task> func, int times, int millisecondsBetween = 100) {
             for (int i = 0; i < times; i++) {
                 try {
                     await func.Invoke();
+                    return;
                 }
-                catch {
-                    if (times < 0) {
+                catch (Exception ex) {
+                    times--;
+                    if (times == 0) {
                         throw;
                     }
+                    await Task.Delay(millisecondsBetween);
                     await Again(func, --times);
                 }
             }

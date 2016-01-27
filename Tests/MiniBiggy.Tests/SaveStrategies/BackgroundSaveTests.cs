@@ -35,7 +35,7 @@ namespace MiniBiggy.Tests.SaveStrategies {
         }
 
         [Test]
-        public void Should_not_notify_save_when_dirty() {
+        public void Should_not_notify_save_when_not_dirty() {
             var sem = new Semaphore(0, 1);
             var saveCalled = false;
             var strategy = new BackgroundSave(TimeSpan.FromSeconds(10));

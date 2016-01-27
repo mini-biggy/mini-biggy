@@ -6,7 +6,6 @@ using MiniBiggy.SaveStrategies;
 using Newtonsoft.Json;
 
 namespace MiniBiggy {
-
     public class PersistentList<T> : ICollection<T> where T : new() {
 
         private readonly List<T> _items;
@@ -22,15 +21,7 @@ namespace MiniBiggy {
         public event EventHandler Saved;
 
         public bool IsNew { get; set; }
-
-        public static PersistentList<T> Create(string path, ISaveStrategy saveStrategy) {
-            return new PersistentList<T>(new FileSystem.FileSystem(path), saveStrategy);
-        }
-
-        public static PersistentList<T> Create(ISaveStrategy saveStrategy) {
-            return new PersistentList<T>(new FileSystem.FileSystem(""), saveStrategy);
-        }
-
+        
         public PersistentList(IDataStore dataStore, ISaveStrategy saveStrategy) {
             _dataStore = dataStore;
             _items = new List<T>();
@@ -43,7 +34,7 @@ namespace MiniBiggy {
         }
 
         private void Load() {
-            var json = _dataStore.ReadAllTextAsync(Name).Result;
+            var json = _dataStore.ReadAllTextAsync().Result;
             if (String.IsNullOrEmpty(json)) {
                 IsNew = true;
                 return;
@@ -63,7 +54,7 @@ namespace MiniBiggy {
             lock (SyncRoot) {
                 json = JsonConvert.SerializeObject(_items);
             }
-            await _dataStore.WriteAllTextAsync(Name, json);
+            await _dataStore.WriteAllTextAsync(json);
         }
 
         public async virtual Task<int> UpdateAsync(T item) {

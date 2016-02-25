@@ -26,9 +26,11 @@ namespace MiniBiggy.Util {
             try {
                 await Task.Delay(_funcThatReturnsNewDelay.Invoke(delay), token);
             }
-            catch(TaskCanceledException) { }
+            catch(TaskCanceledException) {
+            }
             lock (_syncRoot) {
                 _tokens.Remove(tokenSource);
+                tokenSource.Dispose();
             }
         }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 using MiniBiggy.Util;
 using NUnit.Framework;
@@ -33,12 +32,12 @@ namespace MiniBiggy.Tests.Util {
             await TimeMachine.Delay(10000000);
         }
 
-        [Test]
-        public async Task Should_unblock_one_or_more_delays() {
-            var task = Task.Run(() => {
-                TimeMachine.UnblockOneOrMoreDelays();
-            });
-            await TimeMachine.Delay(10000000);
-        }
+        //[Test]
+        //public async Task Should_unblock_one_or_more_delays() {
+        //    var task = Task.Run(() => {
+        //        TimeMachine.UnblockOneOrMoreDelays();
+        //    });
+        //    await TimeMachine.Delay(10000000);
+        //}
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MiniBiggy;
-using MiniBiggy.SaveStrategies;
 
 namespace FileSystemSample {
     class Program {
@@ -12,7 +11,7 @@ namespace FileSystemSample {
 
         static void Main(string[] args) {
 
-            _miniBiggy = PersistentList<Tweet>.Create(new BackgroundSave(TimeSpan.FromSeconds(3)));
+            _miniBiggy = CreateList<Tweet>.UsingPath("db").BackgroundSavingEvery(TimeSpan.FromSeconds(3));
             for (int i = 0; i < 1000; i++) {
                 var t = new Tweet { Id = i };
                 _miniBiggy.Add(t);

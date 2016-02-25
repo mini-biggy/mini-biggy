@@ -9,11 +9,11 @@ namespace MiniBiggy.Tests {
             Json = "";
         }
 
-        public Task<string> ReadAllTextAsync(string listName) {
+        public Task<string> ReadAllTextAsync() {
             return Task.FromResult(Json);
         }
 
-        public async Task WriteAllTextAsync(string listName, string json) {
+        public async Task WriteAllTextAsync(string json) {
             Json = json;
         }
     }

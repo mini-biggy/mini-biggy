@@ -24,7 +24,8 @@ namespace MiniBiggy.FileSystem {
                 Directory.CreateDirectory(directory);
             }
             await Try.ThreeTimes(async () => {
-                using (var fs = new FileStream(_fullPath, FileMode.Truncate | FileMode.OpenOrCreate, FileAccess.Write)) {
+                File.Delete(_fullPath);
+                using (var fs = new FileStream(_fullPath, FileMode.OpenOrCreate, FileAccess.Write)) {
                     await fs.WriteAsync(bytes, 0, bytes.Length);
                 }
             });

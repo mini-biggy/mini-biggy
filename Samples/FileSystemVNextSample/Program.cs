@@ -12,6 +12,7 @@ namespace FileSystemSample {
         static void Main(string[] args) {
 
             _miniBiggy = CreateList<Tweet>.UsingPath("tweets.data")
+                                          .UsingJsonSerializer()
                                           .BackgroundSavingEverySecond();
             for (int i = 0; i < 1000; i++) {
                 var t = new Tweet { Id = i };

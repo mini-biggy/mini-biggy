@@ -9,9 +9,10 @@ namespace MiniBiggy.Serializers {
             return JsonConvert.DeserializeObject<List<T>>(list);
         }
 
-        public byte[] Serialize<T>(List<T> list) where T : new() {
+        public virtual byte[] Serialize<T>(List<T> list) where T : new() {
             var json = JsonConvert.SerializeObject(list);
             return Encoding.UTF8.GetBytes(json);
         }
     }
+
 }

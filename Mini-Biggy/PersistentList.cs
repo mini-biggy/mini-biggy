@@ -11,8 +11,9 @@ namespace MiniBiggy {
         private readonly List<T> _items;
         private readonly IDataStore _dataStore;
         private readonly ISerializer _serializer;
+        private readonly ISaveStrategy _saveStrategy;
+
         private static readonly object SyncRoot = new object();
-        public ISaveStrategy SaveStrategy { get; }
 
         public event EventHandler<PersistedEventArgs<T>> ItemsRemoved;
         public event EventHandler<PersistedEventArgs<T>> ItemsAdded;
@@ -27,11 +28,9 @@ namespace MiniBiggy {
             _dataStore = dataStore;
             _serializer = serializer;
             _items = new List<T>();
-            if (saveStrategy == null) {
-                saveStrategy = new SaveOnlyWhenRequested();
-            }
-            SaveStrategy = saveStrategy;
-            SaveStrategy.NotifyUnsolicitedSave += (sender, args) => Save();
+            _serializer = serializer ?? new JsonSerializer();
+            _saveStrategy = saveStrategy ?? new SaveOnlyWhenRequested();
+            _saveStrategy.NotifyUnsolicitedSave += (sender, args) => Save();
             Load();
         }
 
@@ -66,7 +65,7 @@ namespace MiniBiggy {
                     _items[index] = item;
                 }
             }
-            if (SaveStrategy.ShouldSaveNow()) {
+            if (_saveStrategy.ShouldSaveNow()) {
                 await SaveAsync();
             }
             OnItemsUpdated(new List<T> { item });
@@ -84,7 +83,7 @@ namespace MiniBiggy {
                     }
                 }
             }
-            if (SaveStrategy.ShouldSaveNow()) {
+            if (_saveStrategy.ShouldSaveNow()) {
                 await SaveAsync();
             }
             OnItemsUpdated(itemsToUpdate);
@@ -96,7 +95,7 @@ namespace MiniBiggy {
             lock (SyncRoot) {
                 _items.Add(item);
             }
-            if (SaveStrategy.ShouldSaveNow()) {
+            if (_saveStrategy.ShouldSaveNow()) {
                 Save();
             }
             OnItemsAdded(new List<T> { item });
@@ -108,7 +107,7 @@ namespace MiniBiggy {
             lock (SyncRoot) {
                 _items.AddRange(list);
             }
-            if (SaveStrategy.ShouldSaveNow()) {
+            if (_saveStrategy.ShouldSaveNow()) {
                 Save();
             }
             OnItemsAdded(list);
@@ -119,7 +118,7 @@ namespace MiniBiggy {
             lock (SyncRoot) {
                 _items.Clear();
             }
-            if (SaveStrategy.ShouldSaveNow()) {
+            if (_saveStrategy.ShouldSaveNow()) {
                 Save();
             }
             OnItemsChanged(new List<T>());
@@ -146,7 +145,7 @@ namespace MiniBiggy {
             lock (SyncRoot) {
                 removed = _items.Remove(item);
             }
-            if (SaveStrategy.ShouldSaveNow()) {
+            if (_saveStrategy.ShouldSaveNow()) {
                 Save();
             }
             OnItemsRemoved(new List<T> { item });
@@ -164,7 +163,7 @@ namespace MiniBiggy {
                     }
                 }
             }
-            if (SaveStrategy.ShouldSaveNow()) {
+            if (_saveStrategy.ShouldSaveNow()) {
                 Save();
             }
             OnItemsRemoved(removedItems);

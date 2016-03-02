@@ -1,24 +1,22 @@
 ﻿using MiniBiggy.Util;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace MiniBiggy.FileSystem {
+namespace MiniBiggy.DataStores {
     public class FileSystem : IDataStore {
         private readonly string _fullPath = "";
         public FileSystem(string fullPath) {
             _fullPath = fullPath;
         }
         
-        public async Task<string> ReadAllTextAsync() {
+        public async Task<byte[]> ReadAllAsync() {
             if (!File.Exists(_fullPath)) {
-                return "";
+                return new byte[0];
             }
-            return await Task.Run(() => File.ReadAllText(_fullPath));
+            return await Task.Run(() => File.ReadAllBytes(_fullPath));
         }
 
-        public async Task WriteAllTextAsync(string json) {
-            var bytes = Encoding.UTF8.GetBytes(json);
+        public async Task WriteAllAsync(byte[] bytes) {
             var directory = Path.GetDirectoryName(_fullPath);
             if (directory != "") {
                 Directory.CreateDirectory(directory);

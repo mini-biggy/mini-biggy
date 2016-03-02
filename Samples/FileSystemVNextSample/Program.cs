@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MiniBiggy;
-using MiniBiggy.SaveStrategies;
-using MiniBiggy.FileSystem;
 
 namespace FileSystemSample {
     class Program {
@@ -14,7 +11,8 @@ namespace FileSystemSample {
 
         static void Main(string[] args) {
 
-            _miniBiggy = CreateList<Tweet>.UsingPath("tweets.data").BackgroundSavingEverySecond();
+            _miniBiggy = CreateList<Tweet>.UsingPath("tweets.data")
+                                          .BackgroundSavingEverySecond();
             for (int i = 0; i < 1000; i++) {
                 var t = new Tweet { Id = i };
                 _miniBiggy.Add(t);

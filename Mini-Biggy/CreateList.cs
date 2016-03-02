@@ -1,4 +1,6 @@
-﻿using MiniBiggy.SaveStrategies;
+﻿using MiniBiggy.DataStores;
+using MiniBiggy.SaveStrategies;
+using MiniBiggy.Serializers;
 using System;
 
 namespace MiniBiggy {
@@ -10,13 +12,14 @@ namespace MiniBiggy {
         public class PersistentListBuilder {
             private string _fullPath;
             private ISaveStrategy _saveStrategy;
-
+            private ISerializer _serializer;
+ 
             public PersistentListBuilder(string fullPath) {
                 _fullPath = fullPath;
             }
 
             private PersistentList<T> Create() {
-                return new PersistentList<T>(new FileSystem.FileSystem(_fullPath), _saveStrategy);
+                return new PersistentList<T>(new FileSystem(_fullPath), _serializer,  _saveStrategy);
             }
 
             public PersistentList<T> BackgroundSavingEvery(TimeSpan timeSpan) {

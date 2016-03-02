@@ -2,7 +2,7 @@
 
 namespace MiniBiggy {
     public interface IDataStore {
-        Task<string> ReadAllTextAsync();
-        Task WriteAllTextAsync(string json);
+        Task<byte[]> ReadAllAsync();
+        Task WriteAllAsync(byte[] list);
     }
 }

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MiniBiggy.SaveStrategies;
-using Newtonsoft.Json;
+using MiniBiggy.Serializers;
 
 namespace MiniBiggy {
     public class PersistentList<T> : ICollection<T> where T : new() {
 
         private readonly List<T> _items;
         private readonly IDataStore _dataStore;
+        private readonly ISerializer _serializer;
         private static readonly object SyncRoot = new object();
         public ISaveStrategy SaveStrategy { get; }
 
@@ -22,8 +23,9 @@ namespace MiniBiggy {
 
         public bool IsNew { get; set; }
         
-        public PersistentList(IDataStore dataStore, ISaveStrategy saveStrategy) {
+        public PersistentList(IDataStore dataStore, ISerializer serializer, ISaveStrategy saveStrategy) {
             _dataStore = dataStore;
+            _serializer = serializer;
             _items = new List<T>();
             if (saveStrategy == null) {
                 saveStrategy = new SaveOnlyWhenRequested();
@@ -34,12 +36,12 @@ namespace MiniBiggy {
         }
 
         private void Load() {
-            var json = _dataStore.ReadAllTextAsync().Result;
-            if (String.IsNullOrEmpty(json)) {
+            var bytes = _dataStore.ReadAllAsync().Result;
+            if (bytes.Length == 0) {
                 IsNew = true;
                 return;
             }
-            _items.AddRange(JsonConvert.DeserializeObject<List<T>>(json));
+            _items.AddRange(_serializer.Deserialize<T>(bytes));
         }
         
         public virtual string Name => typeof(T).Name;
@@ -50,11 +52,11 @@ namespace MiniBiggy {
         }
 
         public async Task SaveAsync() {
-            string json;
+            byte[] bytes;
             lock (SyncRoot) {
-                json = JsonConvert.SerializeObject(_items);
+                bytes = _serializer.Serialize(_items);
             }
-            await _dataStore.WriteAllTextAsync(json);
+            await _dataStore.WriteAllAsync(bytes);
         }
 
         public async virtual Task<int> UpdateAsync(T item) {

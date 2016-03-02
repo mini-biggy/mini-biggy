@@ -11,7 +11,7 @@
   },
 
   "dependencies": {
-    "Mini-Biggy": "1.5-beta"
+    "Mini-Biggy": "2.0.0-beta2"
   },
 
   "commands": {

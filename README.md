@@ -18,7 +18,9 @@ Let's create a class called Tweet and save a tweet object.
 This code will create a file called tweets.data with our tweet serialized. Call Save() or SaveAsync() to persist the list.
 ```
     var t = new Tweet();
-    var list = CreateList<Tweet>.UsingPath("tweets.data").SavingWhenRequested();
+    var list = CreateList<Tweet>.UsingPath("tweets.data")
+                                .UsingJsonSerializer()
+                                .SavingWhenRequested();
     list.Add(t);
     await list.SaveAsync();
 ```
@@ -26,7 +28,9 @@ This code will create a file called tweets.data with our tweet serialized. Call 
 ###Loading them later
 Every time you create a list of some type, it will load all saved objects of that type:
 ```
-    var list = CreateList<Tweet>.UsingPath("tweets.data").SavingWhenRequested();
+    var list = CreateList<Tweet>.UsingPath("tweets.data")
+                                .UsingJsonSerializer()
+                                .SavingWhenRequested();
     var count = list.Count(); //equals 1
 ```
 
@@ -40,6 +44,13 @@ Remember, your list is entirely in memory, so any linq operator will work just f
                 .FirstOrDefault();
 ```
 
+##Serializers
+
+Mini-biggy comes with 2 serializers:
+
+- JsonSerializer 
+- PrettyJsonSerializer (the json is indented)
+
 ##Saving Modes
 
 You can follow 3 strategies to save your list using biggy:
@@ -50,7 +61,9 @@ The list will be saved only when Save() or SaveAsync() is called. This is the de
 
 ```
     var t = new Tweet();
-    var list = CreateList<Tweet>.UsingPath("tweets.data").SavingWhenRequested();
+    var list = CreateList<Tweet>.UsingPath("tweets.data")
+                                .UsingJsonSerializer()
+                                .SavingWhenRequested();
     list.Add(t);
     list.Save();
 ```
@@ -61,7 +74,9 @@ The list will be saved on every change: adding, deleting or updating an item sav
 
 ```
     var t = new Tweet();
-    var list = CreateList<Tweet>.UsingPath("tweets.data").SavingWhenCollectionChanges();
+    var list = CreateList<Tweet>.UsingPath("tweets.data")
+                                .UsingJsonSerializer()
+                                .SavingWhenCollectionChanges();
     list.Add(t); //list saved
 ```
 
@@ -73,10 +88,20 @@ This is really useful if your list changes a lot, specilly by multithread applic
 
 ```
     var t = new Tweet();
-    var list = CreateList<Tweet>.UsingPath("tweets.data").BackgroundSavingEverySecond();
-    //or CreateList<Tweet>.UsingPath("tweets.data").BackgroundSavingEvery(TimeSpan.FromSeconds(5));
+    var list = CreateList<Tweet>.UsingPath("tweets.data").UsingJsonSerializer().BackgroundSavingEverySecond();
+    //or CreateList<Tweet>.UsingPath("tweets.data").UsingJsonSerializer().BackgroundSavingEvery(TimeSpan.FromSeconds(5));
     list.Add(t); //it will be saved on next loop, in a background thread
 ```
+
+##Extending Mini-Biggy
+
+You can also create your own serializer, datastore and save strategy, just implement the right interfaces and pass it on the PersistentList constructor. The interfaces are: *IDataStore*, *ISerializer* and *ISaveStrategy*.
+
+```
+  var list = new PersistentList<Tweet>(yourDataStore, yourSerializer, yourSaveStrategy);
+```
+
+
 
 ##Is mini-biggy for you?
 Mini-biggy is an excellent choice for storing your persistence data if:

@@ -1,0 +1,28 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "MiniBiggy.Tests Class Library",
+  "authors": [ "Andre" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "compilationOptions": {
+    "emitEntryPoint": true
+  },
+
+  "commands": {
+    "test": "MiniBiggy.Tests"
+  },
+
+  "dependencies": {
+    "Mini-Biggy": "2.0-beta3",
+    "nunitlite": "3.0.1",
+    "System.IO.FileSystem": "4.0.1-beta-23516"
+  },
+
+  "frameworks": {
+    "dnx46": {
+
+    }
+  }
+}

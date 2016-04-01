@@ -1,19 +1,21 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace MiniBiggy.Tests {
     public class MemDataStore : IDataStore {
 
-        public string Json { get; set; }
+        public byte[] Json { get; set; }
 
         public MemDataStore() {
-            Json = "";
+            Json = new byte[0];
         }
 
-        public Task<string> ReadAllTextAsync() {
-            return Task.FromResult(Json);
+
+        public async Task<byte[]> ReadAllAsync() {
+            return await Task.FromResult(Json);
         }
 
-        public async Task WriteAllTextAsync(string json) {
+        public async Task WriteAllAsync(byte[] json) {
             Json = json;
         }
     }

@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using System.Reflection;
 using System.Diagnostics;
+using MiniBiggy.DataStores;
+using System.Text;
 
 namespace MiniBiggy.Tests {
     public class PersistentListIntegration {
@@ -13,8 +15,8 @@ namespace MiniBiggy.Tests {
             File.Delete(file);
             Directory.CreateDirectory(Path.GetDirectoryName(file));
 
-            var fs = new FileSystem.FileSystem(file);
-            await fs.WriteAllTextAsync("json");
+            var fs = new FileSystem(file);
+            await fs.WriteAllAsync(Encoding.UTF8.GetBytes("json"));
             Assert.IsTrue(File.Exists(file));
 
             File.Delete(file);

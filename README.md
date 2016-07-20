@@ -111,10 +111,5 @@ Mini-biggy is an excellent choice for storing your persistence data if:
  - you want full Linq support 
  - your objects are json serialized and you will take care of them when changing your model
 
-##Which platforms does it support?
- - net451
- - dotnet5.4
-
-
 
 All the credits for the original idea go to [Rob Conery](https://github.com/robconery).

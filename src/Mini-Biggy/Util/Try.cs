@@ -13,7 +13,7 @@ namespace MiniBiggy.Util {
                     await func.Invoke();
                     return;
                 }
-                catch (Exception ex) {
+                catch (Exception) {
                     times--;
                     if (times == 0) {
                         throw;

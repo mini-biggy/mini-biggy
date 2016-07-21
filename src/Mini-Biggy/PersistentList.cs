@@ -58,7 +58,7 @@ namespace MiniBiggy {
             await _dataStore.WriteAllAsync(bytes);
         }
 
-        public async virtual Task<int> UpdateAsync(T item) {
+        public virtual async Task<int> UpdateAsync(T item) {
             lock (SyncRoot) {
                 var index = _items.IndexOf(item);
                 if (index > -1) {
@@ -73,7 +73,7 @@ namespace MiniBiggy {
             return 1;
         }
 
-        public async virtual Task<int> UpdateAsync(IEnumerable<T> items) {
+        public virtual async Task<int> UpdateAsync(IEnumerable<T> items) {
             var itemsToUpdate = items.ToList();
             lock (SyncRoot) {
                 foreach (var item in itemsToUpdate) {

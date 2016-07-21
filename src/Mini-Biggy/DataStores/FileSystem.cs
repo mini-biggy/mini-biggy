@@ -1,32 +1,37 @@
-﻿using MiniBiggy.Util;
+﻿using System;
+using MiniBiggy.Util;
 using System.IO;
 using System.Threading.Tasks;
 
 namespace MiniBiggy.DataStores {
     public class FileSystem : IDataStore {
-        private readonly string _fullPath = "";
+        public string FullPath { get; }
         public FileSystem(string fullPath) {
-            _fullPath = fullPath;
+            FullPath = fullPath;
         }
         
         public async Task<byte[]> ReadAllAsync() {
-            if (!File.Exists(_fullPath)) {
+            if (!File.Exists(FullPath)) {
                 return new byte[0];
             }
-            return await Task.Run(() => File.ReadAllBytes(_fullPath));
+            return await Try.ThreeTimesAsync(() => File.ReadAllBytes(FullPath));
         }
 
         public async Task WriteAllAsync(byte[] bytes) {
-            var directory = Path.GetDirectoryName(_fullPath);
+            await WriteAllAsync(bytes, FullPath);
+        }
+
+        public async Task WriteAllAsync(byte[] bytes, string path) {
+            var directory = Path.GetDirectoryName(FullPath);
             if (directory != "") {
                 Directory.CreateDirectory(directory);
             }
-            await Try.ThreeTimes(async () => {
-                File.Delete(_fullPath);
-                using (var fs = new FileStream(_fullPath, FileMode.OpenOrCreate, FileAccess.Write)) {
+            await Try.ThreeTimesAsync(async () => {
+                File.Delete(FullPath);
+                using (var fs = new FileStream(FullPath, FileMode.OpenOrCreate, FileAccess.Write)) {
                     await fs.WriteAsync(bytes, 0, bytes.Length);
                 }
-            });
+            }, 300);
         }
     }
 }

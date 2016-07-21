@@ -1,5 +1,5 @@
 ﻿{
-  "version": "2.0-beta4",
+  "version": "2.0-beta5",
   "authors": [ "Andre Carlucci" ],
   "packOptions": {
     "iconUrl": "https://raw.githubusercontent.com/mini-biggy/mini-biggy/master/Assets/mini_biggy.png",
@@ -11,7 +11,7 @@
 
   "dependencies": {
     "NETStandard.Library": "1.6.0",
-    "Newtonsoft.Json": "7.0.1"
+    "Newtonsoft.Json": "9.0.1"
   },
 
   "frameworks": {

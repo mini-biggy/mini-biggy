@@ -12,12 +12,12 @@ namespace MiniBiggy {
 
         private CreateList() { }
 
-        public static IChooseSerializer<T> UsingPath(string fullpath) {
+        public static IChooseSerializer<T> SavingAt(string fullpath) {
             var builder = new CreateList<T>();
             builder._dataStore = new FileSystem(fullpath);
             return builder;
         }
-
+        
         public IChooseSaveMode<T> UsingJsonSerializer() {
             _serializer = new JsonSerializer();
             return this;
@@ -63,14 +63,21 @@ namespace MiniBiggy {
             return Create();
         }
 
-        public PersistentList<T> Create() {
-            return new PersistentList<T>(_dataStore, _serializer, _saveStrategy);
+        private PersistentList<T> Create() {
+            if (_serializer == null) {
+                _serializer = new JsonSerializer();
+            }
+            if (_saveStrategy == null) {
+                _saveStrategy = new SaveOnlyWhenRequested();
+            }
+           return new PersistentList<T>(_dataStore, _serializer, _saveStrategy);
         }
     }
 
     public interface IChooseSerializer<T> where T : new() {
         IChooseSaveMode<T> UsingJsonSerializer();
         IChooseSaveMode<T> UsingPrettyJsonSerializer();
+         
     }
 
     public interface IChooseSaveMode<T> where T : new() {

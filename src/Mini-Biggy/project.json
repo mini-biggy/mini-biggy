@@ -1,0 +1,22 @@
+﻿{
+  "version": "2.0",
+  "authors": [ "Andre Carlucci" ],
+  "packOptions": {
+    "iconUrl": "https://raw.githubusercontent.com/mini-biggy/mini-biggy/master/Assets/mini_biggy.png",
+    "licenseUrl": "https://github.com/mini-biggy/mini-biggy/blob/master/LICENSE",
+    "summary": "Ultra-simple json document store with linq based on Biggy",
+    "tags": [ "biggy documentstore json linq nosql sql database filesystem vnext" ],
+    "projectUrl": "https://github.com/mini-biggy/mini-biggy"
+  },
+
+  "dependencies": {
+    "NETStandard.Library": "1.6.0",
+    "Newtonsoft.Json": "9.0.1"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  }
+}

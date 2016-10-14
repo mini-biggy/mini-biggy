@@ -8,6 +8,22 @@ using MiniBiggy;
 namespace Sample.DotNetCoreCmd {
     public class Program {
         public static void Main(string[] args) {
+
+            var storagePath = @"C:\dev\way2labs\SxDashboard\src\SxDashboard\dashboardfiles\dashboardheaders.data";
+            var list  = CreateList<Tweet>.SavingAt(storagePath)
+                                                          .UsingPrettyJsonSerializer()
+                                                          .SavingWhenRequested();
+
+            list.Saved += (sender, eventArgs) => {
+                Console.WriteLine("saved");
+            };
+
+            list.Add(new Tweet());
+
+            list.SaveAsync().Wait();
+
+
+
             var listPath = @"db\tweets.json";
             var bkpDir = @"db\bkp";
 

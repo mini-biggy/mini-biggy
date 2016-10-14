@@ -20,7 +20,7 @@ namespace MiniBiggy {
         public event EventHandler<PersistedEventArgs<T>> ItemsUpdated;
         public event EventHandler<PersistedEventArgs<T>> ItemsChanged;
         public event EventHandler Loaded;
-        public event EventHandler Saved;
+        public event EventHandler<SavedEventArgs> Saved;
 
         public bool IsNew { get; set; }
         
@@ -47,15 +47,21 @@ namespace MiniBiggy {
 
         public void Save() {
             SaveAsync().Wait();
-            OnSaved();
         }
 
         public async Task SaveAsync() {
-            byte[] bytes;
-            lock (SyncRoot) {
-                bytes = _serializer.Serialize(_items);
+            try {
+                byte[] bytes;
+                lock (SyncRoot) {
+                    bytes = _serializer.Serialize(_items);
+                }
+                await _dataStore.WriteAllAsync(bytes);
+                OnSaved();
             }
-            await _dataStore.WriteAllAsync(bytes);
+            catch (Exception ex) {
+                OnSaved(ex);
+                throw;
+            }
         }
 
         public virtual async Task<int> UpdateAsync(T item) {
@@ -203,8 +209,8 @@ namespace MiniBiggy {
             Loaded?.Invoke(this, EventArgs.Empty);
         }
 
-        protected virtual void OnSaved() {
-            Saved?.Invoke(this, EventArgs.Empty);
+        protected virtual void OnSaved(Exception exception = null) {
+            Saved?.Invoke(this, new SavedEventArgs(exception));
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿{
-  "version": "2.0-beta5",
+  "version": "2.0",
   "authors": [ "Andre Carlucci" ],
   "packOptions": {
     "iconUrl": "https://raw.githubusercontent.com/mini-biggy/mini-biggy/master/Assets/mini_biggy.png",

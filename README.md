@@ -2,7 +2,7 @@
   <img src="https://github.com/mini-biggy/mini-biggy/blob/master/Assets/mini_biggy.png" width="350px" alt="mini-biggy" />
 </p>
 
-##*Biggy got too big, so I created Mini-Biggy.*
+##*Biggy became too big, so I created Mini-Biggy.*
 
 [Biggy](https://github.com/robconery/biggy) is a Very Fast Document/Relational Query Tool with Full LINQ Compliance. 
 

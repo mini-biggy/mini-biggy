@@ -9,10 +9,10 @@ namespace Sample.DotNetCoreCmd {
     public class Program {
         public static void Main(string[] args) {
 
-            var storagePath = @"C:\dev\way2labs\SxDashboard\src\SxDashboard\dashboardfiles\dashboardheaders.data";
+            var storagePath = @"db\tweets.json";
             var list  = CreateList<Tweet>.SavingAt(storagePath)
-                                                          .UsingPrettyJsonSerializer()
-                                                          .SavingWhenRequested();
+                                         .UsingPrettyJsonSerializer()
+                                         .SavingWhenRequested();
 
             list.Saved += (sender, eventArgs) => {
                 Console.WriteLine("saved");
@@ -51,6 +51,8 @@ namespace Sample.DotNetCoreCmd {
                 db.Save();
             }
             Console.WriteLine("End");
+
+            Console.ReadLine();
         }
     }
 

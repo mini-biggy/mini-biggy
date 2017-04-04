@@ -22,12 +22,15 @@ namespace MiniBiggy.DataStores {
         }
 
         public async Task WriteAllAsync(byte[] bytes, string path) {
-            var directory = Path.GetDirectoryName(FullPath);
+            var directory = Path.GetDirectoryName(path);
             if (directory != "") {
                 Directory.CreateDirectory(directory);
             }
             await Try.ThreeTimesAsync(async () => {
-                File.Delete(FullPath);
+                File.Delete(path + ".old");
+                if (File.Exists(path)) {
+                    File.Move(path, path + ".old");
+                }
                 using (var fs = new FileStream(FullPath, FileMode.OpenOrCreate, FileAccess.Write)) {
                     await fs.WriteAsync(bytes, 0, bytes.Length);
                 }

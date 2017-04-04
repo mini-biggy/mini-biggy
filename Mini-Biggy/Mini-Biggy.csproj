@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>2.0</VersionPrefix>
+    <Authors>Andre Carlucci</Authors>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <AssemblyName>Mini-Biggy</AssemblyName>
+    <PackageId>mini-biggy</PackageId>
+    <PackageTags>biggy documentstore json linq nosql sql database filesystem vnext netstandard</PackageTags>
+    <PackageIconUrl>https://raw.githubusercontent.com/mini-biggy/mini-biggy/master/Assets/mini_biggy.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/mini-biggy/mini-biggy</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/mini-biggy/mini-biggy/blob/master/LICENSE</PackageLicenseUrl>
+    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>2.1</Version>
+    <Description>Mini-Biggy is a Very Fast Document/Relational Query Tool with Full LINQ Compliance.</Description>
+    <RepositoryUrl>https://github.com/mini-biggy/mini-biggy</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+  </ItemGroup>
+
+</Project>

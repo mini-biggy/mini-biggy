@@ -2,27 +2,27 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using MiniBiggy.Util;
-using NUnit.Framework;
+using Xunit;
 
 namespace MiniBiggy.Tests.Util {
     public class TimeMachineTests {
-        [Test]
+        [Fact]
         public void Shoul_replace_now() {
             var fixedDate = new DateTime(2015, 1, 1);
             TimeMachine.OverrideNowWith(() => fixedDate);
-            Assert.AreEqual(fixedDate, TimeMachine.Now);
+            Assert.Equal(fixedDate, TimeMachine.Now);
         }
 
-        [Test]
+        [Fact]
         public async Task Should_override_delay() {
             TimeMachine.OverrideDelayWith(orig => TimeSpan.Zero);
             var sw = new Stopwatch();
             sw.Start();
             await TimeMachine.Delay(10000000);
-            Assert.IsTrue(sw.Elapsed < TimeSpan.FromSeconds(1));
+            Assert.True(sw.Elapsed < TimeSpan.FromSeconds(1));
         }
 
-        [Test]
+        [Fact]
         public async Task Should_unblock_delay() {
             var task = Task.Run(async () => {
                 while (TimeMachine.UnblockAllDelays() == 0) {
@@ -31,13 +31,5 @@ namespace MiniBiggy.Tests.Util {
             });
             await TimeMachine.Delay(10000000);
         }
-
-        //[Test]
-        //public async Task Should_unblock_one_or_more_delays() {
-        //    var task = Task.Run(() => {
-        //        TimeMachine.UnblockOneOrMoreDelays();
-        //    });
-        //    await TimeMachine.Delay(10000000);
-        //}
     }
 }

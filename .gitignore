@@ -184,3 +184,5 @@ FakesAssemblies/
 project.lock.json
 *.data
 .vs/
+Sample.DotNetCoreCmd/db/bkp/tweets_2017-04-04_16-02-34.bkp
+Sample.DotNetCoreCmd/db/

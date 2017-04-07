@@ -13,7 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Mini-Biggy\Mini-Biggy.csproj" />
     <ProjectReference Include="..\Mini-Biggy\Mini-Biggy.csproj" />
   </ItemGroup>
 

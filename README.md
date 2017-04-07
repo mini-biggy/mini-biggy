@@ -11,6 +11,8 @@ The original project became too big, many refactorings were happening all the ti
 ## Nuget
 **Install-Package mini-biggy**
 
+[![Build status](https://ci.appveyor.com/api/projects/status/5c4ivbnxwmm15nj8?svg=true)](https://ci.appveyor.com/project/Andre/mini-biggy)
+
 ## Quick Start
 
 ### Saving your objects

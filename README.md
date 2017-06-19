@@ -30,7 +30,7 @@ This code will create a file called tweets.data with our tweet serialized. Call 
 
 ### Loading them later
 Every time you create a list of some type, it will load all saved objects of that type:
-```
+```cs
     var list = CreateList<Tweet>.SavingAt("tweets.data")
                                 .UsingJsonSerializer()
                                 .SavingWhenRequested();
@@ -41,7 +41,7 @@ Every time you create a list of some type, it will load all saved objects of tha
 
 Remember, your list is entirely in memory, so any linq operator will work just fine:
 
-```
+```cs
  biggyList.Where(x => x.Username == "admin" && x.Message.ToLower().Contains("urgent"))
                 .OrderBy(x => x.DateTime)
                 .FirstOrDefault();
@@ -62,7 +62,7 @@ You can follow 3 strategies to save your list using biggy:
 
 The list will be saved only when Save() or SaveAsync() is called. This is the default behavior.
 
-```
+```cs
     var t = new Tweet();
     var list = CreateList<Tweet>.SavingAt("tweets.data")
                                 .UsingJsonSerializer()
@@ -75,7 +75,7 @@ The list will be saved only when Save() or SaveAsync() is called. This is the de
 
 The list will be saved on every change: adding, deleting or updating an item saves the list. You still can call Save and SaveAsync if you want.
 
-```
+```cs
     var t = new Tweet();
     var list = CreateList<Tweet>.SavingAt("tweets.data")
                                 .UsingJsonSerializer()
@@ -89,7 +89,7 @@ Just note that it can take some time to save, specially on loops (use AddRange w
 
 This is really useful if your list changes a lot, specilly by multithread applications (web). The list will be saved every X seconds, but only if it was modified. You still can call Save and SaveAsync if you want.
 
-```
+```cs
     var t = new Tweet();
     var list = CreateList<Tweet>.SavingAt("tweets.data").UsingJsonSerializer().BackgroundSavingEverySecond();
     //or CreateList<Tweet>.SavingAt("tweets.data").UsingJsonSerializer().BackgroundSavingEvery(TimeSpan.FromSeconds(5));
@@ -100,7 +100,7 @@ This is really useful if your list changes a lot, specilly by multithread applic
 
 You can also create your own serializer, datastore and save strategy, just implement the right interfaces and pass it on the PersistentList constructor. The interfaces are: *IDataStore*, *ISerializer* and *ISaveStrategy*.
 
-```
+```cs
   var list = new PersistentList<Tweet>(yourDataStore, yourSerializer, yourSaveStrategy);
 ```
 

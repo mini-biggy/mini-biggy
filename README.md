@@ -18,7 +18,8 @@ The original project became too big, many refactorings were happening all the ti
 ### Saving your objects
 Let's create a class called Tweet and save a tweet object.
 This code will create a file called tweets.data with our tweet serialized. Call Save() or SaveAsync() to persist the list.
-```
+
+```cs
     var t = new Tweet();
     var list = CreateList<Tweet>.SavingAt("tweets.data")
                                 .UsingJsonSerializer()

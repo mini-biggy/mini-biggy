@@ -5,20 +5,21 @@ using System;
 
 namespace MiniBiggy {
 
-    [Obsolete("Use Create.ListOf<T> instead")]
-    public class CreateList<T> : IChooseSerializer<T>, IChooseSaveMode<T> where T : new() {
+    public class CreateListOf<T> where T : new() {
+        public IChooseSerializer<T> SavingAt(string fullpath) {
+            return new CreateListOfBuilder<T>(new FileSystem(fullpath));
+        }
+    }
+
+    public class CreateListOfBuilder<T> : IChooseSerializer<T>, IChooseSaveMode<T> where T : new() {
         private IDataStore _dataStore;
         private ISerializer _serializer;
         private ISaveStrategy _saveStrategy;
 
-        private CreateList() { }
-
-        public static IChooseSerializer<T> SavingAt(string fullpath) {
-            var builder = new CreateList<T>();
-            builder._dataStore = new FileSystem(fullpath);
-            return builder;
+        public CreateListOfBuilder(IDataStore dataStore) {
+            _dataStore = dataStore;
         }
-
+        
         public IChooseSaveMode<T> UsingJsonSerializer() {
             _serializer = new JsonSerializer();
             return this;
@@ -73,26 +74,5 @@ namespace MiniBiggy {
             }
             return new PersistentList<T>(_dataStore, _serializer, _saveStrategy);
         }
-    }
-
-    public interface IChooseSerializer<T> where T : new() {
-        IChooseSaveMode<T> UsingJsonSerializer();
-        IChooseSaveMode<T> UsingPrettyJsonSerializer();
-
-    }
-
-    public interface IChooseSaveMode<T> where T : new() {
-        PersistentList<T> BackgroundSavingEvery(TimeSpan timeSpan);
-        PersistentList<T> BackgroundSavingEverySecond();
-
-        PersistentList<T> BackgroundSavingEveryTwoSeconds();
-
-        PersistentList<T> BackgroundSavingEveryFiveSeconds();
-
-        PersistentList<T> BackgroundSavingEveryMinute();
-
-        PersistentList<T> SavingWhenCollectionChanges();
-
-        PersistentList<T> SavingWhenRequested();
     }
 }

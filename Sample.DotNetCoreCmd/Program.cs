@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using MiniBiggy;
 
 namespace Sample.DotNetCoreCmd {
@@ -10,7 +6,7 @@ namespace Sample.DotNetCoreCmd {
         public static void Main(string[] args) {
 
             var storagePath = @"db\tweets.json";
-            var list  = CreateList<Tweet>.SavingAt(storagePath)
+            var list  = Create.ListOf<Tweet>().SavingAt(storagePath)
                                          .UsingPrettyJsonSerializer()
                                          .SavingWhenRequested();
 
@@ -21,13 +17,12 @@ namespace Sample.DotNetCoreCmd {
             list.Add(new Tweet());
 
             list.SaveAsync().Wait();
-
-
+            
 
             var listPath = @"db\tweets.json";
             var bkpDir = @"db\bkp";
-
-            var db = CreateList<Tweet>
+          
+            var db = Create.ListOf<Tweet>()
                 .SavingAt(listPath)
                 .UsingPrettyJsonSerializer()
                 .SavingWhenRequested();

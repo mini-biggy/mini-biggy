@@ -1,51 +1,68 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using MiniBiggy;
+using MiniBiggy.DataStores;
+using MiniBiggy.SaveStrategies;
+using MiniBiggy.Serializers;
 
 namespace Sample.DotNetCoreCmd {
     public class Program {
-        public static void Main(string[] args) {
-
+        public static async Task Main(string[] args) {
+            var sw = new Stopwatch();
+            sw.Start();
             var storagePath = @"db\tweets.json";
-            var list  = Create.ListOf<Tweet>().SavingAt(storagePath)
-                                         .UsingPrettyJsonSerializer()
-                                         .SavingWhenRequested();
+            var list = Create.ListOf<Tweet>().SavingAt(storagePath)
+                                             .UsingPrettyJsonSerializer()
+                                             .BackgroundSavingEveryTwoSeconds();
 
-            list.Saved += (sender, eventArgs) => {
-                Console.WriteLine("saved");
-            };
-
-            list.Add(new Tweet());
-
-            list.SaveAsync().Wait();
+            Console.WriteLine("Loaded: " + sw.Elapsed.TotalMilliseconds);
             
 
-            var listPath = @"db\tweets.json";
-            var bkpDir = @"db\bkp";
-          
-            var db = Create.ListOf<Tweet>()
-                .SavingAt(listPath)
-                .UsingPrettyJsonSerializer()
-                .SavingWhenRequested();
-
-            var backup = ConfigureBackup.CopyListFrom(listPath)
-                .ToDirectory(bkpDir)
-                .KeepNewest(10)
-                .BackupEverySave(db);
-
-            backup.BackupAttempted += (sender, eventArgs) => {
-                Console.WriteLine($"Backup: {eventArgs.BackupPath} - {eventArgs.Success} : {eventArgs.Exception}");
+            list.Saved += (sender, arg) => {
+                Console.WriteLine($"-- Save: Serialize: {arg.TimeToSerialize} Save: {arg.TimeToSave} Size: {arg.SizeInBytes} Success: {arg.Success} Error: {arg.Exception?.ToString()??  "None"}" );
             };
 
-            Console.WriteLine("Hello, hit enter to create and save a tweet");
-            while (true) {
-                var line = Console.ReadLine();
-                if (line == "exit") {
-                    break;
-                }
-                db.Add(new Tweet {Message = line});
-                db.Save();
-            }
+            var times = 1000000;
+            var result = Parallel.For(0, times, async (i) => {
+                list.Add(new Tweet {
+                    Id = i,
+                    Message = "" + i }
+                );
+                //await list.SaveAsync();
+            });
+            //await list.SaveAsync();
+
             Console.WriteLine("End");
+
+            //var listPath = @"db\tweets.json";
+            //var bkpDir = @"db\bkp";
+
+            //var db = Create.ListOf<Tweet>()
+            //    .SavingAt(listPath)
+            //    .UsingPrettyJsonSerializer()
+            //    .SavingWhenRequested();
+
+            //var backup = ConfigureBackup.CopyListFrom(listPath)
+            //    .ToDirectory(bkpDir)
+            //    .KeepNewest(10)
+            //    .BackupEverySave(db);
+
+            //backup.BackupAttempted += (sender, eventArgs) => {
+            //    Console.WriteLine($"Backup: {eventArgs.BackupPath} - {eventArgs.Success} : {eventArgs.Exception}");
+            //};
+
+            //Console.WriteLine("Hello, hit enter to create and save a tweet");
+            //while (true) {
+            //    //var line = Console.ReadLine();
+            //    //if (line == "exit") {
+            //    //    break;
+            //    //}
+            //    db.Add(new Tweet {Message = "foo"});
+            //    db.Save();
+            //}
+            //Console.WriteLine("End");
 
             Console.ReadLine();
         }

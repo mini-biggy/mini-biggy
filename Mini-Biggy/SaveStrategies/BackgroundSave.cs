@@ -20,8 +20,13 @@ namespace MiniBiggy.SaveStrategies {
                 if (!IsDirty) {
                     continue;
                 }
-                OnNotifySave();
-                IsDirty = false;
+                try {
+                    OnNotifySave();
+                    IsDirty = false;
+                }
+                catch {
+                    await TimeMachine.Delay(IntervalBetweenSaves);
+                }
             }
         }
 

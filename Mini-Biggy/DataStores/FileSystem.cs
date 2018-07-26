@@ -10,18 +10,18 @@ namespace MiniBiggy.DataStores {
             FullPath = fullPath;
         }
         
-        public async Task<byte[]> ReadAllAsync() {
+        public virtual async Task<byte[]> ReadAllAsync() {
             if (!File.Exists(FullPath)) {
                 return new byte[0];
             }
             return await Try.ThreeTimesAsync(() => File.ReadAllBytes(FullPath));
         }
 
-        public async Task WriteAllAsync(byte[] bytes) {
+        public virtual async Task WriteAllAsync(byte[] bytes) {
             await WriteAllAsync(bytes, FullPath);
         }
 
-        public async Task WriteAllAsync(byte[] bytes, string path) {
+        public virtual async Task WriteAllAsync(byte[] bytes, string path) {
             var directory = Path.GetDirectoryName(path);
             if (directory != "") {
                 Directory.CreateDirectory(directory);

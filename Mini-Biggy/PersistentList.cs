@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using MiniBiggy.SaveStrategies;
@@ -50,17 +51,25 @@ namespace MiniBiggy {
         }
 
         public async Task SaveAsync() {
+            var args = new SavedEventArgs();
+            var sw = Stopwatch.StartNew();
             try {
                 byte[] bytes;
                 lock (SyncRoot) {
                     bytes = _serializer.Serialize(_items);
                 }
+                args.TimeToSerialize = sw.Elapsed;
+                args.SizeInBytes = bytes.Length;
+                sw.Restart();
                 await _dataStore.WriteAllAsync(bytes);
-                OnSaved();
             }
             catch (Exception ex) {
-                OnSaved(ex);
+                args.Exception = ex;
                 throw;
+            }
+            finally {
+                args.TimeToSave = sw.Elapsed;
+                OnSaved(args);
             }
         }
 
@@ -209,8 +218,8 @@ namespace MiniBiggy {
             Loaded?.Invoke(this, EventArgs.Empty);
         }
 
-        protected virtual void OnSaved(Exception exception = null) {
-            Saved?.Invoke(this, new SavedEventArgs(exception));
+        protected virtual void OnSaved(SavedEventArgs args) {
+            Saved?.Invoke(this, args);
         }
     }
 }

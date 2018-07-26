@@ -104,6 +104,16 @@ You can also create your own serializer, datastore and save strategy, just imple
   var list = new PersistentList<Tweet>(yourDataStore, yourSerializer, yourSaveStrategy);
 ```
 
+### Mini-Biggy on SqlServer
+
+Do you want to use SqlServer as your Mini-Biggy storage? It's done :)
+
+https://github.com/andrecarlucci/mini-biggy-sqlserver
+
+**Nuget**
+```
+Install-Package mini-biggy-sqlserver
+```
 
 
 ## Is mini-biggy for you?

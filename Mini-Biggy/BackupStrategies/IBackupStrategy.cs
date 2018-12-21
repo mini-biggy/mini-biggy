@@ -1,7 +1,9 @@
 ﻿using System;
 
-namespace MiniBiggy.BackupStrategies {
-    public interface IBackupStrategy {
+namespace MiniBiggy.BackupStrategies
+{
+    public interface IBackupStrategy
+    {
         event EventHandler<BackupAttemptedEventArgs> BackupAttempted;
     }
 }

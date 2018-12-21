@@ -1,11 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>Sample.DotNetCoreCmd</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Sample.DotNetCoreCmd</PackageId>
-    <RuntimeFrameworkVersion>1.0.4</RuntimeFrameworkVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -22,5 +21,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Mini-Biggy\Mini-Biggy.csproj" />
   </ItemGroup>
-
 </Project>

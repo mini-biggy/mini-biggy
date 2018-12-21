@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MiniBiggy;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using MiniBiggy;
-using MiniBiggy.DataStores;
-using MiniBiggy.SaveStrategies;
-using MiniBiggy.Serializers;
 
-namespace Sample.DotNetCoreCmd {
-    public class Program {
-        public static async Task Main(string[] args) {
+namespace Sample.DotNetCoreCmd
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
             var sw = new Stopwatch();
             sw.Start();
             var storagePath = @"db\tweets.json";
@@ -18,17 +17,20 @@ namespace Sample.DotNetCoreCmd {
                                              .BackgroundSavingEveryTwoSeconds();
 
             Console.WriteLine("Loaded: " + sw.Elapsed.TotalMilliseconds);
-            
 
-            list.Saved += (sender, arg) => {
-                Console.WriteLine($"-- Save: Serialize: {arg.TimeToSerialize} Save: {arg.TimeToSave} Size: {arg.SizeInBytes} Success: {arg.Success} Error: {arg.Exception?.ToString()??  "None"}" );
+            list.Saved += (sender, arg) =>
+            {
+                Console.WriteLine($"-- Save: Serialize: {arg.TimeToSerialize} Save: {arg.TimeToSave} Size: {arg.SizeInBytes} Success: {arg.Success} Error: {arg.Exception?.ToString() ?? "None"}");
             };
 
             var times = 1000000;
-            var result = Parallel.For(0, times, async (i) => {
-                list.Add(new Tweet {
+            var result = Parallel.For(0, times, async (i) =>
+            {
+                list.Add(new Tweet
+                {
                     Id = i,
-                    Message = "" + i }
+                    Message = "" + i
+                }
                 );
                 //await list.SaveAsync();
             });
@@ -68,7 +70,8 @@ namespace Sample.DotNetCoreCmd {
         }
     }
 
-    public class Tweet {
+    public class Tweet
+    {
         public int Id { get; set; }
         public string Message { get; set; }
         public DateTime DateTime { get; set; }
